@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500&family=Barlow+Condensed:wght@300;400;500;600&family=Inter:wght@300;400;500&family=Reem+Kufi:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 6% 8%;
+    --foreground: 40 20% 96%;
+    --card: 220 6% 11%;
+    --card-foreground: 40 20% 96%;
+    --popover: 220 6% 11%;
+    --popover-foreground: 40 20% 96%;
+    --primary: 26 45% 68%;
+    --primary-foreground: 220 8% 7%;
+    --secondary: 220 5% 15%;
+    --secondary-foreground: 40 20% 96%;
+    --muted: 220 5% 16%;
+    --muted-foreground: 30 8% 66%;
+    --accent: 26 45% 68%;
+    --accent-foreground: 220 8% 7%;
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 30 6% 24%;
+    --input: 30 6% 24%;
+    --ring: 26 45% 68%;
+    --radius: 0.125rem;
+    --sand: 40 22% 92%;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-display {
+  font-family: 'Barlow Condensed', 'Inter', sans-serif;
+}
+
+.font-editorial {
+  font-family: 'Bodoni Moda', Georgia, serif;
+}
+
+.label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+
+.hairline {
+  height: 1px;
+  background: hsl(var(--border));
+}
+
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 34s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.spin-slow {
+  animation: spin 44s linear infinite;
+}
+
+/* ---------- RTL / Arabic typography ---------- */
+[dir="rtl"] body {
+  font-family: 'Tajawal', 'Inter', sans-serif;
+}
+[dir="rtl"] .font-display {
+  font-family: 'Reem Kufi', 'Tajawal', sans-serif;
+  letter-spacing: 0;
+}
+[dir="rtl"] .font-editorial {
+  font-family: 'Tajawal', Georgia, serif;
+}
+/* Wide Latin letter-spacing reads as gaps in Arabic — relax it. */
+[dir="rtl"] .label {
+  letter-spacing: 0.1em;
+  line-height: 1.7;
+}
+/* Comfortable line-height for Arabic body + headings. */
+[dir="rtl"] p,
+[dir="rtl"] li {
+  line-height: 1.85;
+}
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3 {
+  line-height: 1.25;
+}
+/* Marquee scrolls the other way in RTL. */
+[dir="rtl"] .marquee-track {
+  animation-direction: reverse;
+}
+/* Flip directional arrows to point with the reading flow. */
+[dir="rtl"] .rtl-flip {
+  transform: scaleX(-1);
+}
+
+*:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .marquee-track, .spin-slow { animation: none; }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

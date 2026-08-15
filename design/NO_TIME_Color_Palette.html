@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NO TIME — Color System 2026</title>
+<style>
+  :root{
+    --copper-light:#F0BD86;
+    --copper-deep:#B36D49;
+    --charcoal:#262626;
+    --grey-mid:#A6A8AB;
+    --grey-light:#DDDDDD;
+    --black:#000000;
+    --white:#FFFFFF;
+    --hair:rgba(255,255,255,.14);
+    --sans:"Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--charcoal);
+    color:var(--white);
+    font-family:var(--sans);
+    font-weight:300;
+    letter-spacing:.06em;
+    padding:56px 60px 40px;
+    min-height:100vh;
+  }
+
+  /* ── frame labels (mirrors the brand sheet) ───────────── */
+  .frame{display:flex;justify-content:space-between;align-items:flex-start;
+         font-size:11px;letter-spacing:.18em;color:var(--grey-mid);text-transform:uppercase;line-height:1.5}
+  .frame .r{text-align:right}
+
+  header{margin:120px 0 96px}
+  .eyebrow{font-size:11px;letter-spacing:.34em;color:var(--copper-light);text-transform:uppercase;margin-bottom:26px}
+  h1{
+    font-size:clamp(44px,8.4vw,116px);
+    font-weight:300;line-height:.92;letter-spacing:-.01em;text-transform:uppercase;
+    background:linear-gradient(90deg,var(--copper-light) 0%,var(--copper-deep) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  header p{max-width:46ch;margin-top:28px;font-size:13px;line-height:1.9;color:var(--grey-mid);letter-spacing:.05em}
+
+  /* ── section heads ────────────────────────────────────── */
+  .sec{display:flex;justify-content:space-between;align-items:baseline;
+       border-top:1px solid var(--hair);padding-top:14px;margin:0 0 34px}
+  .sec h2{font-size:12px;font-weight:400;letter-spacing:.28em;text-transform:uppercase}
+  .sec span{font-size:11px;letter-spacing:.2em;color:var(--grey-mid)}
+
+  /* ── signature: gradient ruler w/ minute ticks ────────── */
+  .ruler{margin-bottom:110px}
+  .ramp{height:132px;border-radius:2px;
+        background:linear-gradient(90deg,var(--copper-light) 0%,var(--copper-deep) 100%);
+        position:relative;overflow:hidden}
+  .ticks{position:absolute;inset:0;display:flex;justify-content:space-between;padding:0 0}
+  .ticks i{width:1px;height:14px;background:rgba(38,38,38,.45);margin-top:0}
+  .ticks i.major{height:26px;background:rgba(38,38,38,.8)}
+  .rampfoot{display:flex;justify-content:space-between;margin-top:14px;
+            font-size:11px;letter-spacing:.2em;color:var(--grey-mid);text-transform:uppercase}
+
+  /* ── swatch grid ──────────────────────────────────────── */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:104px}
+  .sw{position:relative;aspect-ratio:4/5;padding:22px;display:flex;flex-direction:column;
+      justify-content:space-between;cursor:pointer;transition:transform .35s cubic-bezier(.2,.7,.3,1)}
+  .sw:hover{transform:translateY(-6px)}
+  .sw:focus-visible{outline:2px solid var(--copper-light);outline-offset:3px}
+  .sw .name{font-size:11px;letter-spacing:.2em;text-transform:uppercase}
+  .sw .data{font-size:11px;line-height:2;letter-spacing:.1em}
+  .sw .data b{font-weight:400;font-size:19px;letter-spacing:.06em;display:block;margin-bottom:6px}
+  .sw .use{font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.62;margin-top:10px}
+  .copied{position:absolute;top:22px;right:22px;font-size:10px;letter-spacing:.2em;
+          text-transform:uppercase;opacity:0;transition:opacity .2s}
+  .sw.on .copied{opacity:1}
+
+  .dark{color:var(--white)} .light{color:var(--charcoal)}
+
+  /* ── code block ───────────────────────────────────────── */
+  .code{background:#1C1C1C;border:1px solid var(--hair);border-radius:2px;padding:26px 28px;
+        font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:12.5px;
+        line-height:2.1;letter-spacing:.02em;color:var(--grey-light);white-space:pre;overflow-x:auto}
+  .code .c{color:#6E6E6E}
+  .code .v{color:var(--copper-light)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:104px}
+
+  /* ── rules list ───────────────────────────────────────── */
+  .rules{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--hair);margin-bottom:96px}
+  .rule{background:var(--charcoal);padding:30px 32px 34px}
+  .rule h3{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--copper-light);margin-bottom:12px;font-weight:400}
+  .rule p{font-size:12.5px;line-height:1.95;color:var(--grey-mid);letter-spacing:.04em}
+
+  footer{border-top:1px solid var(--hair);padding-top:16px;
+         display:flex;justify-content:space-between;font-size:11px;
+         letter-spacing:.18em;color:#6E6E6E;text-transform:uppercase}
+
+  @media (max-width:860px){
+    body{padding:32px 22px}
+    .grid{grid-template-columns:repeat(2,1fr)}
+    .two,.rules{grid-template-columns:1fr}
+    header{margin:64px 0 64px}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media print{
+    body{background:#fff;color:#000;padding:24px}
+    .ramp{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+
+<div class="frame">
+  <div>NO&nbsp;TIME<br>BRAND</div>
+  <div class="r">IT'S TIME<br>TO START.</div>
+</div>
+
+<header>
+  <div class="eyebrow">Color System</div>
+  <h1>Copper<br>&amp; Carbon</h1>
+  <p>Values pulled directly from the master logo artwork — vector source, not sampled from image. Tap any swatch to copy its HEX.</p>
+</header>
+
+<div class="ruler">
+  <div class="sec"><h2>Primary Gradient</h2><span>Linear · 90° · 2 stops</span></div>
+  <div class="ramp"><div class="ticks" id="ticks"></div></div>
+  <div class="rampfoot"><span>0% &nbsp;·&nbsp; #F0BD86</span><span>#B36D49 &nbsp;·&nbsp; 100%</span></div>
+</div>
+
+<div class="sec"><h2>Palette</h2><span>7 values</span></div>
+<div class="grid" id="grid"></div>
+
+<div class="sec"><h2>Tokens</h2><span>Copy &amp; paste</span></div>
+<div class="two">
+<div class="code"><span class="c">/* CSS */</span>
+:root {
+  <span class="v">--nt-copper-light</span>: #F0BD86;
+  <span class="v">--nt-copper-deep</span> : #B36D49;
+  <span class="v">--nt-charcoal</span>    : #262626;
+  <span class="v">--nt-grey-mid</span>    : #A6A8AB;
+  <span class="v">--nt-grey-light</span>  : #DDDDDD;
+  <span class="v">--nt-black</span>       : #000000;
+  <span class="v">--nt-white</span>       : #FFFFFF;
+  <span class="v">--nt-gradient</span>: linear-gradient(
+      90deg, #F0BD86 0%, #B36D49 100%);
+}</div>
+<div class="code"><span class="c">// After Effects / Premiere</span>
+Copper Light   <span class="v">240, 189, 134</span>
+Copper Deep    <span class="v">179, 109,  73</span>
+Charcoal       <span class="v">38,   38,  38</span>
+Grey Mid       <span class="v">166, 168, 171</span>
+Grey Light     <span class="v">221, 221, 221</span>
+
+<span class="c">// Ramp direction</span>
+Horizontal on the wide lockup
+Vertical on the stacked lockup</div>
+</div>
+
+<div class="sec"><h2>Usage</h2><span>Rules</span></div>
+<div class="rules">
+  <div class="rule"><h3>Gradient</h3><p>Only on the wordmark and on hero type. Never on body copy, never on backgrounds behind the logo — it kills the contrast the mark needs.</p></div>
+  <div class="rule"><h3>Backgrounds</h3><p>Charcoal for premium and editorial. Copper Deep for full-bleed statement frames with the white mark. White for documents and print.</p></div>
+  <div class="rule"><h3>Mono lockup</h3><p>Grey Mid on light grounds, Grey Light on dark. One flat value — no gradient in mono, no drop shadows, no outlines.</p></div>
+  <div class="rule"><h3>Clean-up</h3><p>A stray <b style="color:#005BA5;font-weight:400">#005BA5</b> object sits on page 8 of the source PDF. It's an Illustrator leftover, not a brand color — delete before release.</p></div>
+</div>
+
+<footer>
+  <span>SA/UAE/EG/QA/OM/KU</span>
+  <span>NO TIME</span>
+  <span>2026</span>
+</footer>
+
+<script>
+const COLORS = [
+  {n:"Copper Light", h:"#F0BD86", r:"240 · 189 · 134", c:"0 · 21 · 44 · 6",  u:"Gradient start · accents", t:"light"},
+  {n:"Copper Deep",  h:"#B36D49", r:"179 · 109 · 73",  c:"0 · 39 · 59 · 30", u:"Gradient end · brand ground", t:"dark"},
+  {n:"Charcoal",     h:"#262626", r:"38 · 38 · 38",    c:"0 · 0 · 0 · 85",   u:"Primary background", t:"dark"},
+  {n:"Grey Mid",     h:"#A6A8AB", r:"166 · 168 · 171", c:"3 · 2 · 0 · 33",   u:"Mono logo · captions", t:"dark"},
+  {n:"Grey Light",   h:"#DDDDDD", r:"221 · 221 · 221", c:"0 · 0 · 0 · 13",   u:"Soft background", t:"light"},
+  {n:"Black",        h:"#000000", r:"0 · 0 · 0",       c:"0 · 0 · 0 · 100",  u:"Max-contrast mark", t:"dark"},
+  {n:"White",        h:"#FFFFFF", r:"255 · 255 · 255", c:"0 · 0 · 0 · 0",    u:"Reversed mark · paper", t:"light"}
+];
+
+const grid = document.getElementById("grid");
+COLORS.forEach(c => {
+  const el = document.createElement("div");
+  el.className = "sw " + (c.t === "light" ? "light" : "dark");
+  el.style.background = c.h;
+  if (c.h === "#FFFFFF" || c.h === "#DDDDDD") el.style.border = "1px solid rgba(0,0,0,.08)";
+  if (c.h === "#262626" || c.h === "#000000") el.style.border = "1px solid rgba(255,255,255,.12)";
+  el.tabIndex = 0;
+  el.innerHTML = `<div class="name">${c.n}</div>
+    <div class="copied">Copied</div>
+    <div class="data"><b>${c.h}</b>RGB ${c.r}<br>CMYK ${c.c}<div class="use">${c.u}</div></div>`;
+  const copy = () => {
+    navigator.clipboard?.writeText(c.h);
+    el.classList.add("on");
+    setTimeout(() => el.classList.remove("on"), 1100);
+  };
+  el.addEventListener("click", copy);
+  el.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); copy(); } });
+  grid.appendChild(el);
+});
+
+const ticks = document.getElementById("ticks");
+for (let i = 0; i <= 60; i++) {
+  const t = document.createElement("i");
+  if (i % 5 === 0) t.className = "major";
+  ticks.appendChild(t);
+}
+</script>
+</body>
+</html>
