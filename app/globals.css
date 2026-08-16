@@ -1,0 +1,362 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Official brand values (NO_TIME_Color_Palette.html — "Copper & Carbon"),
+       converted from their source hex to the H S% L% triples this file's
+       hsl(var(--x)) tokens expect. Each --nt-* is the exact brand color;
+       the semantic tokens below assign them to roles using the palette's
+       own documented usage rules. */
+    --nt-copper-light: 31 78% 73%;  /* #F0BD86 — gradient start · accents */
+    --nt-copper-deep: 20 42% 49%;   /* #B36D49 — gradient end · brand ground */
+    --nt-charcoal: 0 0% 15%;        /* #262626 — primary background */
+    --nt-grey-mid: 216 3% 66%;      /* #A6A8AB — mono logo (light grounds) · captions */
+    --nt-grey-light: 0 0% 87%;      /* #DDDDDD — soft background · mono logo (dark grounds) */
+    --nt-black: 0 0% 0%;            /* max-contrast mark */
+    --nt-white: 0 0% 100%;          /* reversed mark · paper */
+    /* Gradient rule from the source doc: wordmark and hero type only —
+       never body copy, never a background. */
+    --nt-gradient: linear-gradient(90deg, #F0BD86 0%, #B36D49 100%);
+
+    --background: var(--nt-charcoal);
+    --foreground: var(--nt-white);
+    /* Card/secondary/muted/border have no dedicated brand swatch — these are
+       neutral (0% saturation) steps lifted off --nt-charcoal to keep the
+       existing surface layering without introducing an off-brand hue. */
+    --card: 0 0% 18%;
+    --card-foreground: var(--nt-white);
+    --popover: 0 0% 18%;
+    --popover-foreground: var(--nt-white);
+    --primary: var(--nt-copper-light);
+    --primary-foreground: var(--nt-black);
+    --secondary: 0 0% 20%;
+    --secondary-foreground: var(--nt-white);
+    --muted: 0 0% 20%;
+    --muted-foreground: var(--nt-grey-mid);
+    --accent: var(--nt-copper-light);
+    --accent-foreground: var(--nt-black);
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 27%;
+    --input: 0 0% 27%;
+    --ring: var(--nt-copper-light);
+    --radius: 0.125rem;
+    --sand: var(--nt-grey-light);
+    /* Must match SiteNav.jsx's fixed header (nav is h-[68px], header itself
+       adds no extra padding). Single source of truth so pinned sections can
+       reserve real clearance below the fixed header instead of guessing. */
+    --header-h: 68px;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-inter), sans-serif;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-display {
+  font-family: var(--font-barlow-condensed), var(--font-inter), sans-serif;
+}
+
+.font-editorial {
+  font-family: var(--font-bodoni-moda), Georgia, serif;
+}
+
+.label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+
+.hairline {
+  height: 1px;
+  background: hsl(var(--border));
+}
+
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 34s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.spin-slow {
+  animation: spin 44s linear infinite;
+}
+
+/* ---------- chapter background system (TickRail.jsx) ---------- */
+/* Defaults match the "arrival" chapter — the page always loads there.
+   GSAP tweens these three vars per chapter; only background-color (a paint
+   property, not layout) reacts to them. */
+#top {
+  --chapter-h: 0;
+  --chapter-s: 0%;
+  --chapter-l: 10%;
+  background-color: hsl(var(--chapter-h) var(--chapter-s) var(--chapter-l));
+}
+
+/* ---------- tick rail (persistent scroll-progress device) ---------- */
+.tick-rail {
+  position: fixed;
+  z-index: 40;
+  pointer-events: none;
+  inset-inline-end: 18px;
+  top: 96px;
+  bottom: 96px;
+  width: 2px;
+  background: repeating-linear-gradient(
+    to bottom,
+    hsl(var(--border)) 0,
+    hsl(var(--border)) 1px,
+    transparent 1px,
+    transparent 12px
+  );
+}
+.tick-rail-fill {
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: hsl(var(--primary));
+  transform: scaleY(var(--rail-progress, 0));
+  transform-origin: top;
+}
+.tick-rail-label {
+  position: fixed;
+  inset-inline-end: 18px;
+  top: 96px;
+  color: hsl(var(--muted-foreground));
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+}
+@media (max-width: 860px) {
+  .tick-rail {
+    inset-inline-end: 0;
+    inset-inline-start: 0;
+    top: 0;
+    bottom: auto;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 2px;
+    background: hsl(var(--border));
+  }
+  .tick-rail-fill {
+    transform: scaleX(var(--rail-progress, 0));
+    transform-origin: left;
+  }
+  .tick-rail-label {
+    inset-inline-end: auto;
+    inset-inline-start: 12px;
+    top: 8px;
+    writing-mode: horizontal-tb;
+  }
+}
+[dir="rtl"] .tick-rail-fill {
+  transform-origin: top;
+}
+@media (max-width: 860px) {
+  [dir="rtl"] .tick-rail-fill {
+    transform-origin: right;
+  }
+}
+
+/* ---------- RTL / Arabic typography ---------- */
+[dir="rtl"] body {
+  font-family: var(--font-tajawal), var(--font-inter), sans-serif;
+}
+[dir="rtl"] .font-display {
+  font-family: var(--font-reem-kufi), var(--font-tajawal), sans-serif;
+  letter-spacing: 0;
+}
+[dir="rtl"] .font-editorial {
+  font-family: var(--font-tajawal), Georgia, serif;
+}
+/* Wide Latin letter-spacing reads as gaps in Arabic — relax it. */
+[dir="rtl"] .label {
+  letter-spacing: 0.1em;
+  line-height: 1.7;
+}
+/* Comfortable line-height for Arabic body + headings. */
+[dir="rtl"] p,
+[dir="rtl"] li {
+  line-height: 1.85;
+}
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3 {
+  line-height: 1.25;
+}
+/* Marquee scrolls the other way in RTL. */
+[dir="rtl"] .marquee-track {
+  animation-direction: reverse;
+}
+/* Flip directional arrows to point with the reading flow. */
+[dir="rtl"] .rtl-flip {
+  transform: scaleX(-1);
+}
+
+*:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .marquee-track, .spin-slow { animation: none; }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+
+
+
+/* =====================================================
+   NO TIME — CINEMATIC MARQUEE
+   ===================================================== */
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-33.333333%, 0, 0);
+  }
+}
+
+@keyframes marquee-rtl {
+  from {
+    transform: translate3d(-33.333333%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-marquee {
+  animation:
+    marquee
+    32s
+    linear
+    infinite;
+  will-change: transform;
+}
+
+.animate-marquee-rtl {
+  animation:
+    marquee-rtl
+    32s
+    linear
+    infinite;
+  will-change: transform;
+}
+
+/* Respect accessibility preferences */
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-marquee-rtl {
+    animation: none;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+
+
+
+/* =====================================================
+   TRUSTED BY — CONTINUOUS LOGO MARQUEE
+   ===================================================== */
+
+@keyframes trusted-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-33.333333%, 0, 0);
+  }
+}
+
+@keyframes trusted-marquee-rtl {
+  from {
+    transform: translate3d(-33.333333%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-trusted {
+  animation:
+    trusted-marquee
+    38s
+    linear
+    infinite;
+  will-change: transform;
+}
+
+.animate-trusted-rtl {
+  animation:
+    trusted-marquee-rtl
+    38s
+    linear
+    infinite;
+  will-change: transform;
+}
+
+/*
+ * Slow down slightly when the user interacts with the strip.
+ * We don't pause completely because the strip should still feel alive.
+ */
+
+.group:hover .animate-trusted,
+.group:hover .animate-trusted-rtl {
+  animation-play-state: paused;
+}
+
+/*
+ * Accessibility
+ */
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-trusted,
+  .animate-trusted-rtl {
+    animation: none;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+
