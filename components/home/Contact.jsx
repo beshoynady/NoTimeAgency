@@ -45,7 +45,7 @@ const CONTACTS = [
 ];
 
 export default function Contact() {
-  const { t, dir } = useLang();
+  const { t } = useLang();
   const rm = useReducedMotion();
   const ref = useRef(null);
 
@@ -278,16 +278,6 @@ export default function Contact() {
             ))}
           </div>
         </motion.div>
-
-        {/* Small supporting line */}
-        <motion.p
-          style={{
-            opacity: contactsOpacity,
-          }}
-          className="mt-7 max-w-xl text-xs uppercase tracking-[0.18em] text-muted-foreground"
-        >
-          {t.finalCta.contactPlaceholder}
-        </motion.p>
       </div>
     </section>
   );

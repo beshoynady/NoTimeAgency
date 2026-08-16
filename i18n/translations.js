@@ -150,7 +150,6 @@ export const translations = {
       label: 'No Time Brand',
       statement: 'It’s time to start.',
       cta: 'Start a Project',
-      contactPlaceholder: '[Contact details to be provided]',
     },
     footer: {
       dubai: 'Dubai',
@@ -308,7 +307,6 @@ export const translations = {
       label: 'نو تايم',
       statement: 'حان وقت البدء.',
       cta: 'ابدأ مشروعًا',
-      contactPlaceholder: '[سيتم تزويد بيانات التواصل]',
     },
     footer: {
       dubai: 'دبي',

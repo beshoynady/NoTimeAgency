@@ -213,6 +213,32 @@ function OpeningStatement({ t, progress }) {
 /* SIDE NAV                                                                   */
 /* -------------------------------------------------------------------------- */
 
+function PhaseRailItem({ index, progress }) {
+  const { start, end } = phaseWindow(index);
+
+  const opacity = useTransform(
+    progress,
+    [start, start + 0.03, end - 0.03, end],
+    [0.35, 1, 1, 0.35],
+  );
+
+  const width = useTransform(
+    progress,
+    [start, start + 0.03],
+    ["1.5rem", "3rem"],
+  );
+
+  return (
+    <motion.div style={{ opacity }} className="flex items-center gap-2">
+      <motion.span style={{ width }} className="h-px bg-primary" />
+
+      <span className="label">
+        0{index + 1}
+      </span>
+    </motion.div>
+  );
+}
+
 function PhaseRail({ progress, phases }) {
   return (
     <div
@@ -229,38 +255,9 @@ function PhaseRail({ progress, phases }) {
         lg:flex
       "
     >
-      {phases.map((phase, index) => {
-        const { start, end } = phaseWindow(index);
-
-        const opacity = useTransform(
-          progress,
-          [start, start + 0.03, end - 0.03, end],
-          [0.35, 1, 1, 0.35],
-        );
-
-        const width = useTransform(
-          progress,
-          [start, start + 0.03],
-          ["1.5rem", "3rem"],
-        );
-
-        return (
-          <motion.div
-            key={phase.step}
-            style={{ opacity }}
-            className="flex items-center gap-2"
-          >
-            <motion.span
-              style={{ width }}
-              className="h-px bg-primary"
-            />
-
-            <span className="label">
-              0{index + 1}
-            </span>
-          </motion.div>
-        );
-      })}
+      {phases.map((phase, index) => (
+        <PhaseRailItem key={phase.step} index={index} progress={progress} />
+      ))}
     </div>
   );
 }
@@ -372,6 +369,16 @@ export default function Process() {
     [0, 1],
   );
 
+  // Must be called before the reducedMotion early return below — every hook
+  // in this component has to run unconditionally on every render, otherwise
+  // toggling the OS reduced-motion setting while the page is open trips
+  // React's "rendered fewer hooks than expected" error.
+  const scrollIndicatorOpacity = useTransform(
+    progress,
+    [PHASE_START, PHASE_START + 0.05, PHASE_END],
+    [0, 1, 0],
+  );
+
   const phases = t.brandStory.cycle;
 
   if (reducedMotion) {
@@ -448,13 +455,7 @@ export default function Process() {
         {/* ---------------------------------------------------------------- */}
 
         <motion.div
-          style={{
-            opacity: useTransform(
-              progress,
-              [PHASE_START, PHASE_START + 0.05, PHASE_END],
-              [0, 1, 0],
-            ),
-          }}
+          style={{ opacity: scrollIndicatorOpacity }}
           className="
             absolute
             bottom-8
