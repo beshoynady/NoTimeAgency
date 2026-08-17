@@ -58,7 +58,7 @@ export default function SiteNav() {
           <Logo alt="" />
         </a>
 
-        <ul className="hidden items-center gap-9 md:flex" role="list">
+        <ul className="hidden items-center gap-9 lg:flex" role="list">
           {links.map((l) => (
             <li key={l.href}>
               <a
@@ -101,7 +101,7 @@ export default function SiteNav() {
 
           <a
             href="#contact"
-            className="hidden border border-primary/60 px-5 py-3 label text-primary transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2 sm:inline-block"
+            className="hidden border border-primary/60 px-5 py-3 label text-primary transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2 lg:inline-block"
           >
             {t.nav.cta}
           </a>
@@ -113,7 +113,7 @@ export default function SiteNav() {
             aria-expanded={open}
             aria-controls="mobile-menu"
             onClick={() => setOpen((v) => !v)}
-            className="grid h-11 w-11 place-items-center border border-border text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary md:hidden"
+            className="grid h-11 w-11 place-items-center border border-border text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary lg:hidden"
           >
             {open ? <X size={18} strokeWidth={1.4} /> : <Menu size={18} strokeWidth={1.4} />}
           </button>
@@ -121,7 +121,7 @@ export default function SiteNav() {
       </nav>
 
       {open && (
-        <div id="mobile-menu" className="border-t border-border bg-background md:hidden">
+        <div id="mobile-menu" className="border-t border-border bg-background lg:hidden">
           <ul className="px-5 py-2" role="list">
             {links.map((l, i) => (
               <li key={l.href} className="border-b border-border/60 last:border-0">

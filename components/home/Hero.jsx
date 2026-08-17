@@ -147,7 +147,7 @@ export default function Hero() {
           style={{ scale: bgScale, y: bgY, opacity: bgOpacity }}
           className="absolute inset-0"
         >
-          <Image src={IMG.heroPortal} alt="" fill priority className="object-cover" />
+          <Image src={IMG.heroPortal} alt="" fill priority sizes="100vw" className="object-cover" />
           {/* Center darkened more than the original formula: this image's
               light burst sits dead-center, right where the "NO TIME" text
               sits — protecting contrast there, not hiding the image. */}

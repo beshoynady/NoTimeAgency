@@ -8,8 +8,9 @@ const CONTACTS = [
   {
     label: "Phone",
     value: "+971 54 453 4333",
-    href: "tel:+971544534333",
+    href: "https://wa.me/971544534333",
     Icon: Phone,
+    external: true,
   },
   {
     label: "Email",
@@ -232,7 +233,7 @@ export default function Footer() {
                       </span>
 
                       <span className="mt-1 block truncate text-sm text-foreground transition-colors duration-300 group-hover:text-primary">
-                        {value}
+                        <bdi dir="ltr">{value}</bdi>
                       </span>
                     </span>
 

@@ -25,8 +25,9 @@ const CONTACTS = [
     type: "phone",
     label: "Call us",
     value: "+971 54 453 4333",
-    href: "tel:+971544534333",
+    href: "https://wa.me/971544534333",
     Icon: Phone,
+    external: true,
   },
   {
     type: "email",
@@ -41,6 +42,7 @@ const CONTACTS = [
     value: "@notimehub",
     href: "https://www.instagram.com/notimehub/",
     Icon: Instagram,
+    external: true,
   },
 ];
 
@@ -148,6 +150,7 @@ export default function Contact() {
           alt=""
           fill
           priority={false}
+          sizes="100vw"
           className="object-cover"
         />
 
@@ -228,12 +231,12 @@ export default function Contact() {
           </div>
 
           <div className="grid grid-cols-1 border border-border/70 bg-background/20 backdrop-blur-md sm:grid-cols-3">
-            {CONTACTS.map(({ type, label, value, href, Icon }, index) => (
+            {CONTACTS.map(({ type, label, value, href, Icon, external }, index) => (
               <a
                 key={type}
                 href={href}
-                target={type === "instagram" ? "_blank" : undefined}
-                rel={type === "instagram" ? "noreferrer" : undefined}
+                target={external ? "_blank" : undefined}
+                rel={external ? "noreferrer" : undefined}
                 className={`
                   group flex min-h-28 items-center gap-4 px-5 py-5 text-start
                   transition-all duration-300
@@ -264,7 +267,7 @@ export default function Contact() {
                   </span>
 
                   <span className="mt-1 block truncate text-sm font-medium tracking-wide text-foreground transition-colors duration-300 group-hover:text-primary">
-                    {value}
+                    <bdi dir="ltr">{value}</bdi>
                   </span>
                 </span>
 

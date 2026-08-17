@@ -390,7 +390,7 @@ export default function Process() {
       ref={ref}
       id="about"
       data-chapter="understanding"
-      className="relative h-[300vh] md:h-[360vh]"
+      className="relative h-[220vh] md:h-[360vh]"
     >
       <div className="sticky top-0 flex h-[100dvh] items-center justify-center overflow-hidden">
 

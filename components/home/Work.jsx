@@ -335,7 +335,7 @@ export default function Work() {
         className="relative border-y border-border"
       >
         <div className="relative h-[55vh] w-full">
-          <Image src={IMG.stadium} alt="" fill className="object-cover" />
+          <Image src={IMG.stadium} alt="" fill sizes="100vw" className="object-cover" />
         </div>
 
         <div className="absolute inset-0 h-[55vh] bg-background/55" />

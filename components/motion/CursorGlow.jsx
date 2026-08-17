@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from "react";
 
@@ -14,7 +14,8 @@ export default function CursorGlow() {
 
   return (
     <div
-      className="pointer-events-none fixed z-[5] hidden h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/5 blur-3xl transition-transform duration-300 ease-out md:block"
+      className="pointer-events-none fixed z-[5] hidden h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full 
+      bg-primary/5 blur-3xl transition-transform duration-300 ease-out md:block"
       style={{ left: cursor.x, top: cursor.y }}
       aria-hidden="true"
     />

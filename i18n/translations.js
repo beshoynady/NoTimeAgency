@@ -4,7 +4,7 @@
 export const translations = {
   en: {
     seo: {
-      title: 'NO TIME — Cinematic Events, Marketing, PR & Production Agency in Dubai',
+      title: 'NO TIME',
       description:
         'NO TIME is an integrated events, marketing, PR, production and digital experience agency based in Dubai. A scroll-driven cinematic creative experience. It’s time to start.',
       ogTitle: 'NO TIME — Integrated Creative Experience Agency',
@@ -164,7 +164,7 @@ export const translations = {
 
   ar: {
     seo: {
-      title: 'نو تايم — وكالة فعاليات وتسويق وعلاقات عامة وإنتاج سينمائية في دبي',
+      title: 'نو تايم',
       description:
         'نو تايم وكالة متكاملة للفعاليات والتسويق والعلاقات العامة والإنتاج والتجارب الرقمية مقرّها دبي. تجربة إبداعية سينمائية يحرّكها التمرير. حان وقت البدء.',
       ogTitle: 'نو تايم — وكالة التجربة الإبداعية المتكاملة',

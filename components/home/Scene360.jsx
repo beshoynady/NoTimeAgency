@@ -470,7 +470,7 @@ export default function Scene360() {
       data-chapter="system"
       className="
         relative
-        h-[290vh]
+        h-[210vh]
         md:h-[340vh]
       "
     >
