@@ -4,63 +4,71 @@ import { useEffect, useRef, useState } from 'react';
 import {
   AnimatePresence,
   motion,
+  useReducedMotion,
 } from 'framer-motion';
 import { useLang } from '../../i18n/LanguageContext';
 import Logo from './Logo';
 
 const MENU_EASE = [0.16, 1, 0.3, 1];
 
-const menuVariants = {
-  closed: {
-    opacity: 0,
-    y: -12,
-    transition: {
-      duration: 0.22,
-      ease: MENU_EASE,
-    },
-  },
-  open: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.42,
-      ease: MENU_EASE,
-    },
-  },
-};
-
-const listVariants = {
-  closed: {
-    transition: {
-      staggerChildren: 0.025,
-      staggerDirection: -1,
-    },
-  },
-  open: {
-    transition: {
-      delayChildren: 0.08,
-      staggerChildren: 0.065,
-    },
-  },
-};
-
-const itemVariants = {
-  closed: {
-    opacity: 0,
-    y: 18,
-  },
-  open: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.45,
-      ease: MENU_EASE,
-    },
-  },
-};
-
 export default function SiteNav() {
   const { t, lang, switchLang } = useLang();
+  const reduceMotion = useReducedMotion();
+
+  // Instant (but non-zero — Framer Motion treats 0 as "skip transition"
+  // and can leave AnimatePresence exit animations stuck) durations when
+  // the user has asked the OS for reduced motion. Positional variants
+  // collapse their transform to the resting value at the same time.
+  const dur = (seconds) => (reduceMotion ? 0.01 : seconds);
+
+  const menuVariants = {
+    closed: {
+      opacity: 0,
+      y: reduceMotion ? 0 : -12,
+      transition: {
+        duration: dur(0.22),
+        ease: MENU_EASE,
+      },
+    },
+    open: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: dur(0.42),
+        ease: MENU_EASE,
+      },
+    },
+  };
+
+  const listVariants = {
+    closed: {
+      transition: {
+        staggerChildren: reduceMotion ? 0 : 0.025,
+        staggerDirection: -1,
+      },
+    },
+    open: {
+      transition: {
+        delayChildren: reduceMotion ? 0 : 0.08,
+        staggerChildren: reduceMotion ? 0 : 0.065,
+      },
+    },
+  };
+
+  const itemVariants = {
+    closed: {
+      opacity: 0,
+      y: reduceMotion ? 0 : 18,
+    },
+    open: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: dur(0.45),
+        ease: MENU_EASE,
+      },
+    },
+  };
 
   const [solid, setSolid] = useState(false);
   const [open, setOpen] = useState(false);
@@ -208,10 +216,10 @@ export default function SiteNav() {
           <motion.div
             animate={{
               opacity: open ? 0.82 : 1,
-              scale: open ? 0.97 : 1,
+              scale: reduceMotion ? 1 : open ? 0.97 : 1,
             }}
             transition={{
-              duration: 0.35,
+              duration: dur(0.35),
               ease: MENU_EASE,
             }}
           >
@@ -281,6 +289,7 @@ export default function SiteNav() {
             className="
               flex
               items-center
+              gap-1
               label
             "
             role="group"
@@ -292,6 +301,10 @@ export default function SiteNav() {
               aria-pressed={lang === 'en'}
               aria-label={t.nav.langEn}
               className={`
+                grid
+                min-h-11
+                min-w-11
+                place-items-center
                 px-1
                 transition-colors
                 duration-300
@@ -321,6 +334,10 @@ export default function SiteNav() {
               aria-pressed={lang === 'ar'}
               aria-label={t.nav.langAr}
               className={`
+                grid
+                min-h-11
+                min-w-11
+                place-items-center
                 px-1
                 transition-colors
                 duration-300
@@ -423,7 +440,7 @@ export default function SiteNav() {
                 scale: open ? 1 : 0,
               }}
               transition={{
-                duration: 0.35,
+                duration: dur(0.35),
                 ease: MENU_EASE,
               }}
               style={{
@@ -459,7 +476,7 @@ export default function SiteNav() {
                   width: open ? 20 : 20,
                 }}
                 transition={{
-                  duration: 0.35,
+                  duration: dur(0.35),
                   ease: MENU_EASE,
                 }}
               />
@@ -477,7 +494,7 @@ export default function SiteNav() {
                   x: open ? 0 : 3,
                 }}
                 transition={{
-                  duration: 0.35,
+                  duration: dur(0.35),
                   ease: MENU_EASE,
                 }}
               />
@@ -513,7 +530,7 @@ export default function SiteNav() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{
-                duration: 0.3,
+                duration: dur(0.3),
               }}
               onClick={() => setOpen(false)}
             />
@@ -550,12 +567,12 @@ export default function SiteNav() {
                   origin-left
                   bg-primary
                 "
-                initial={{ scaleX: 0 }}
+                initial={{ scaleX: reduceMotion ? 1 : 0 }}
                 animate={{ scaleX: 1 }}
-                exit={{ scaleX: 0 }}
+                exit={{ scaleX: reduceMotion ? 1 : 0 }}
                 transition={{
-                  duration: 0.55,
-                  delay: 0.08,
+                  duration: dur(0.55),
+                  delay: reduceMotion ? 0 : 0.08,
                   ease: MENU_EASE,
                 }}
               />
@@ -703,7 +720,7 @@ export default function SiteNav() {
                   animate="open"
                   exit="closed"
                   transition={{
-                    delay: 0.3,
+                    delay: reduceMotion ? 0 : 0.3,
                   }}
                 >
                   <span>{t.nav.cta}</span>
@@ -743,8 +760,8 @@ export default function SiteNav() {
                     opacity: 0,
                   }}
                   transition={{
-                    delay: 0.4,
-                    duration: 0.35,
+                    delay: reduceMotion ? 0 : 0.4,
+                    duration: dur(0.35),
                   }}
                 >
                   <span className="label text-muted-foreground">
