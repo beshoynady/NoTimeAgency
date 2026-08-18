@@ -373,7 +373,7 @@ export default function Services() {
     <section
       id="services"
       data-chapter="system"
-      className="relative mx-auto max-w-[90rem] px-5 py-24 md:px-10 md:py-36"
+      className="relative mx-auto max-w-[90rem] px-5 py-15 md:px-10 md:py-15"
     >
       {/* Section boundary */}
       <motion.div

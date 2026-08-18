@@ -9,538 +9,190 @@ import {
   useSpring,
   useReducedMotion,
 } from "framer-motion";
-import {
-  ArrowUpRight,
-  Sparkles,
-  Play,
-} from "lucide-react";
+import { Sparkles, ArrowUpRight } from "lucide-react";
 import { useLang } from "@/i18n/LanguageContext";
+import Reveal from "@/components/Reveal";
 import { IMG } from "@/lib/images";
 
 const EASE = [0.16, 1, 0.3, 1];
 
-/* -------------------------------------------------------------------------- */
-/* AI & MOTION                                                                */
-/*                                                                            */
-/* A cinematic editorial chapter built around one idea:                       */
-/*                                                                            */
-/*        CONTENT → MOTION → ATTENTION                                        */
-/*                                                                            */
-/* Motion is used for hierarchy, not decoration.                              */
-/*                                                                            */
-/* 1. Background = stable visual stage                                        */
-/* 2. Heading = kinetic typography                                            */
-/* 3. Capabilities = sequential activation                                   */
-/* 4. Media = horizontal cinematic rail                                       */
-/* 5. Scroll = subtle parallax, never aggressive                              */
-/* -------------------------------------------------------------------------- */
-
+// AI & MOTION — simplified from an earlier version that animated roughly
+// sixteen elements independently (eyebrow, its own underline, heading, a
+// separate highlight-span fade, an intro line, five list items each on
+// their own staggered delay, a media heading, four images each on their
+// own staggered delay, a caption, a bottom line, a drifting label...).
+// ui-ux-pro-max's own "Excessive Motion" guideline (High severity) is
+// explicit: animate 1-2 key elements per view, not everything that moves —
+// and next to Capabilities.jsx's now-deliberately-restrained entrance
+// (content is simply there, no risky fade-in), the old version read as a
+// different, busier design system rather than the next chapter of the same
+// one. Down to two beats: IDENTITY (label + heading, together, no internal
+// stagger) and DETAIL (list + media, together, entering once) — plus the
+// ambient scroll-linked drift on the background and the media rail, which
+// stay continuous because that's a different kind of motion (progressive,
+// not an entrance) and is the one place this chapter still gets to feel
+// distinctly "in motion", appropriate for a chapter about motion graphics.
+//
+// Also fixed two real defects found while simplifying, not just trimmed:
+// - The old "intro micro statement" quoted t.aiMotion.items[0] verbatim
+//   above a list that immediately repeats the same item as its own first
+//   row — the same real sentence shown twice with no distinct purpose.
+// - A "PLAY" button with a Play icon sat over the image rail with no video
+//   anywhere in the project — an affordance promising playback that does
+//   not exist. Removed rather than wired to nothing.
+// - The media caption and the bottom marker both said "360°" — that's
+//   Scene360's own signature (the ring mechanism actually completes 360°),
+//   not this chapter's. Reusing it here diluted the one place it's earned.
 export default function AiMotion() {
   const { t, dir } = useLang();
   const rm = useReducedMotion();
-
-const ref = useRef(null);
+  const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
-
-  /*
-   * Smooth scroll progress.
-   *
-   * Deliberately softer than Work/System.
-   * This section should feel editorial and fluid,
-   * not mechanical.
-   */
   const progress = useSpring(scrollYProgress, {
     stiffness: 70,
     damping: 28,
     mass: 0.45,
   });
 
-  /* ------------------------------------------------------------------------ */
-  /* BACKGROUND                                                               */
-  /* ------------------------------------------------------------------------ */
+  // Ambient background — continuous, not an entrance; stays subtle so the
+  // stage reads as stable while the identity/detail beats happen on top.
+  const backgroundScale = useTransform(progress, [0, 1], rm ? [1, 1] : [1.06, 1.02]);
+  const backgroundY = useTransform(progress, [0, 1], rm ? ["0%", "0%"] : ["-2%", "2%"]);
 
-  const backgroundScale = useTransform(
-    progress,
-    [0, 0.5, 1],
-    rm ? [1, 1, 1] : [1.08, 1.03, 1.08],
-  );
-
-  const backgroundY = useTransform(
-    progress,
-    [0, 1],
-    rm ? ["0%", "0%"] : ["-3%", "3%"],
-  );
-
-  const backgroundOpacity = useTransform(
-    progress,
-    [0, 0.2, 0.8, 1],
-    [0.18, 0.3, 0.3, 0.18],
-  );
-
-  /* ------------------------------------------------------------------------ */
-  /* EDITORIAL ACCENT                                                         */
-  /* ------------------------------------------------------------------------ */
-
-  const accentScale = useTransform(
-    progress,
-    [0.05, 0.3, 0.65, 0.95],
-    [0, 1, 1, 0],
-  );
-
-  /* ------------------------------------------------------------------------ */
-  /* MEDIA RAIL                                                               */
-  /* ------------------------------------------------------------------------ */
-
+  // Media rail drift — continuous progressive movement, direction-aware.
   const railX = useTransform(
     progress,
     [0, 1],
-    rm
-      ? ["0%", "0%"]
-      : dir === "rtl"
-        ? ["-4%", "20%"]
-        : ["4%", "-20%"],
+    rm ? ["0%", "0%"] : dir === "rtl" ? ["-4%", "16%"] : ["4%", "-16%"],
   );
 
-  const railRotate = useTransform(
-    progress,
-    [0, 0.5, 1],
-    rm ? [0, 0, 0] : [1.5, 0, -1.5],
-  );
+  // Handoff line at the very end of the chapter — the one place a
+  // scroll-linked draw still makes sense (marks the boundary, not an
+  // entrance).
+  const closeLine = useTransform(progress, [0.85, 1], [0, 1]);
 
-  const images = [
-    IMG.lighting,
-    IMG.sprinter,
-    IMG.stand,
-    IMG.gala,
-  ];
+  const images = [IMG.lighting, IMG.sprinter, IMG.stand, IMG.gala];
 
   return (
-    <section
-      ref={ref}
-      className="relative overflow-hidden border-b border-border"
-    >
-      {/* ================================================================== */}
-      {/* BACKGROUND STAGE                                                   */}
-      {/* ================================================================== */}
-
+    <section ref={ref} className="relative overflow-hidden border-b border-border">
+      {/* Background stage */}
       <motion.div
-        style={{
-          scale: backgroundScale,
-          y: backgroundY,
-        }}
-        className="absolute inset-[-6%]"
+        style={{ scale: backgroundScale, y: backgroundY }}
+        className="absolute inset-0"
         aria-hidden="true"
       >
-        <Image
-          src={IMG.motion}
-          alt=""
-          fill
-          priority={false}
-          sizes="100vw"
-          className="object-cover"
-        />
-
-        <motion.div
-          style={{ opacity: backgroundOpacity }}
-          className="absolute inset-0 bg-background"
-        />
-
-        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/35 to-background/90" />
-
-        {/* Subtle cinematic vignette */}
+        <Image src={IMG.motion} alt="" fill sizes="100vw" className="object-cover opacity-25" />
+        <div className="absolute inset-0 bg-background/70" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_15%,hsl(var(--background)/0.65)_100%)]" />
       </motion.div>
 
-      {/* ================================================================== */}
-      {/* MAIN CONTENT                                                       */}
-      {/* ================================================================== */}
-
-      <div className="relative mx-auto max-w-[90rem] px-5 py-28 md:px-10 md:py-40">
-
-        {/* ---------------------------------------------------------------- */}
-        {/* TOP CONTINUATION LINE                                            */}
-        {/* ---------------------------------------------------------------- */}
-
+      <div className="relative mx-auto max-w-[90rem] px-5 py-24 md:px-10 md:py-36">
+        {/* Continuation line from the previous chapter */}
         <motion.div
           initial={rm ? false : { scaleX: 0 }}
           whileInView={rm ? undefined : { scaleX: 1 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{
-            duration: 1,
-            ease: EASE,
-          }}
-          style={{
-            transformOrigin: dir === "rtl" ? "right" : "left",
-          }}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: 0.8, ease: EASE }}
+          style={{ transformOrigin: dir === "rtl" ? "right" : "left" }}
           className="h-px w-full bg-border"
         />
 
-        {/* ---------------------------------------------------------------- */}
-        {/* EYEBROW                                                          */}
-        {/* ---------------------------------------------------------------- */}
+        {/* Identity — label + heading, one beat, no internal stagger */}
+        <Reveal className="mt-12 flex items-center gap-3 md:mt-16">
+          <Sparkles size={15} strokeWidth={1.4} className="text-primary" aria-hidden="true" />
+          <p className="label text-primary">{t.aiMotion.label}</p>
+        </Reveal>
 
-        <motion.div
-          initial={rm ? false : { opacity: 0, y: 20 }}
-          whileInView={rm ? undefined : { opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{
-            duration: 0.7,
-            ease: EASE,
-          }}
-          className="mt-16 flex items-center gap-3 md:mt-20"
-        >
-          <Sparkles
-            size={15}
-            strokeWidth={1.4}
-            className="text-primary"
-            aria-hidden="true"
-          />
-
-          <p className="label text-primary">
-            {t.aiMotion.label}
-          </p>
-
-          <motion.span
-            initial={rm ? false : { scaleX: 0 }}
-            whileInView={rm ? undefined : { scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{
-              delay: 0.25,
-              duration: 0.7,
-              ease: EASE,
-            }}
-            style={{
-              transformOrigin: dir === "rtl" ? "right" : "left",
-            }}
-            className="h-px w-12 bg-primary"
-          />
-        </motion.div>
-
-        {/* ---------------------------------------------------------------- */}
-        {/* HERO TYPOGRAPHY                                                  */}
-        {/* ---------------------------------------------------------------- */}
-
-        <div className="relative mt-7 max-w-[80rem]">
-          {/* Decorative kinetic line */}
-          <motion.div
-            style={{ scaleX: accentScale }}
-            className={`absolute ${
-              dir === "rtl" ? "right-0" : "left-0"
-            } top-[52%] z-0 h-[0.08em] w-[42%] origin-left bg-primary/70`}
-            aria-hidden="true"
-          />
-
-          <motion.h2
-            initial={rm ? false : { opacity: 0, y: 45 }}
-            whileInView={rm ? undefined : { opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.35 }}
-            transition={{
-              duration: 1,
-              ease: EASE,
-            }}
-            className="relative z-10 text-balance font-display text-[13vw] uppercase leading-[0.78] tracking-[-0.055em] text-foreground md:text-[8vw]"
-          >
+        <Reveal delay={0.05} className="mt-6 max-w-[80rem]">
+          <h2 className="text-balance font-display text-[13vw] uppercase leading-[0.8] tracking-tighter text-foreground md:text-[8vw]">
             {t.aiMotion.headingPre}{" "}
-
-            <motion.span
-              initial={rm ? false : { opacity: 0 }}
-              whileInView={rm ? undefined : { opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{
-                delay: 0.3,
-                duration: 0.8,
-              }}
-              className="relative inline-block text-primary"
-            >
-              {t.aiMotion.headingHighlight}
-            </motion.span>{" "}
-
+            <span className="text-primary">{t.aiMotion.headingHighlight}</span>{" "}
             {t.aiMotion.headingPost}
-          </motion.h2>
-        </div>
+          </h2>
+        </Reveal>
 
-        {/* ---------------------------------------------------------------- */}
-        {/* INTRO MICRO STATEMENT                                            */}
-        {/* ---------------------------------------------------------------- */}
-
-        <motion.div
-          initial={rm ? false : { opacity: 0, y: 20 }}
-          whileInView={rm ? undefined : { opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{
-            delay: 0.2,
-            duration: 0.8,
-            ease: EASE,
-          }}
-          className="mt-10 flex max-w-xl items-start gap-4"
-        >
-          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-
-          <p className="text-sm leading-relaxed text-muted-foreground md:text-base">
-            {t.aiMotion.items[0]}
-          </p>
-        </motion.div>
-
-        {/* ================================================================== */}
-        {/* CONTENT + MEDIA                                                   */}
-        {/* ================================================================== */}
-
-        <div className="mt-20 grid grid-cols-1 gap-16 md:mt-28 lg:grid-cols-12 lg:gap-20">
-
-          {/* ================================================================ */}
-          {/* CAPABILITIES                                                     */}
-          {/* ================================================================ */}
-
+        {/* Detail — list + media, one beat */}
+        <div className="mt-16 grid grid-cols-1 gap-12 md:mt-20 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5">
-            <div className="border-t border-border">
-
+            <ul className="border-t border-border">
               {t.aiMotion.items.map((txt, i) => (
-                <motion.div
-                  key={txt}
-                  initial={
-                    rm
-                      ? false
-                      : {
-                          opacity: 0,
-                          x: dir === "rtl" ? 25 : -25,
-                        }
-                  }
-                  whileInView={
-                    rm
-                      ? undefined
-                      : {
-                          opacity: 1,
-                          x: 0,
-                        }
-                  }
-                  viewport={{
-                    once: true,
-                    amount: 0.35,
-                  }}
-                  transition={{
-                    delay: i * 0.08,
-                    duration: 0.75,
-                    ease: EASE,
-                  }}
-                  className="group border-b border-border/70"
-                >
-                  <div className="relative flex items-center justify-between gap-5 py-6 md:py-7">
-
-                    {/* Active line */}
-                    <motion.span
-                      className={`absolute bottom-0 ${
-                        dir === "rtl" ? "right-0" : "left-0"
-                      } h-px w-0 bg-primary`}
-                      whileHover={{
-                        width: "100%",
-                      }}
-                      transition={{
-                        duration: 0.45,
-                        ease: EASE,
-                      }}
-                    />
-
-                    <div className="flex items-center gap-4">
-
-                      <span className="label text-primary/60">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-
-                      <span className="font-display text-xl uppercase tracking-wide text-foreground transition-transform duration-500 group-hover:translate-x-1 md:text-2xl">
+                <Reveal key={txt} as="li" delay={0.1 + i * 0.05}>
+                  <div className="flex items-center justify-between gap-5 border-b border-border/70 py-6 md:py-7">
+                    <span className="flex items-center gap-4">
+                      <span className="label text-primary/60">{String(i + 1).padStart(2, "0")}</span>
+                      <span className="font-display text-xl uppercase tracking-wide text-foreground md:text-2xl">
                         {txt}
                       </span>
-                    </div>
-
-                    <motion.div
-                      whileHover={{
-                        rotate: 45,
-                        scale: 1.15,
-                      }}
-                      transition={{
-                        duration: 0.35,
-                        ease: EASE,
-                      }}
-                    >
-                      <ArrowUpRight
-                        size={18}
-                        strokeWidth={1.2}
-                        className="shrink-0 text-primary rtl-flip"
-                      />
-                    </motion.div>
+                    </span>
+                    <ArrowUpRight
+                      size={18}
+                      strokeWidth={1.2}
+                      aria-hidden="true"
+                      className="shrink-0 text-primary rtl-flip"
+                    />
                   </div>
-                </motion.div>
+                </Reveal>
               ))}
-
-            </div>
+            </ul>
           </div>
 
-          {/* ================================================================ */}
-          {/* CINEMATIC MEDIA                                                  */}
-          {/* ================================================================ */}
-
           <div className="relative min-w-0 lg:col-span-7">
-
-            {/* Media heading */}
-            <motion.div
-              initial={rm ? false : { opacity: 0, y: 20 }}
-              whileInView={rm ? undefined : { opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{
-                duration: 0.7,
-                ease: EASE,
-              }}
-              className="mb-5 flex items-center justify-between"
-            >
+            <Reveal delay={0.1} className="mb-5">
               <span className="label text-muted-foreground">
-                MOTION / CONTENT
+                {t.aiMotion.mediaLabel}
               </span>
+            </Reveal>
 
-              <span className="flex items-center gap-2 label text-primary">
-                <Play
-                  size={12}
-                  fill="currentColor"
-                  strokeWidth={1}
-                  aria-hidden="true"
-                />
-                PLAY
-              </span>
-            </motion.div>
-
-            {/* Media viewport */}
             <div className="relative overflow-hidden border border-border">
-
-              {/* cinematic rail */}
-              <motion.div
-                style={{
-                  x: railX,
-                  rotate: railRotate,
-                }}
-                className="flex w-max gap-4 p-2 md:gap-5 md:p-3"
-              >
+              <motion.div style={{ x: railX }} className="flex w-max gap-4 p-2 md:gap-5 md:p-3">
                 {images.map((src, i) => (
-                  <motion.div
+                  <Reveal
                     key={src}
-                    initial={
-                      rm
-                        ? false
-                        : {
-                            opacity: 0,
-                            scale: 0.92,
-                          }
-                    }
-                    whileInView={
-                      rm
-                        ? undefined
-                        : {
-                            opacity: 1,
-                            scale: 1,
-                          }
-                    }
-                    viewport={{
-                      once: true,
-                      amount: 0.2,
-                    }}
-                    transition={{
-                      delay: 0.15 + i * 0.1,
-                      duration: 0.9,
-                      ease: EASE,
-                    }}
-                    whileHover={
-                      rm
-                        ? undefined
-                        : {
-                            scale: 1.025,
-                          }
-                    }
-                    className="group relative h-[22rem] w-[18rem] shrink-0 overflow-hidden md:h-[28rem] md:w-[23rem]"
+                    delay={0.15 + i * 0.06}
+                    y={12}
+                    className="group relative h-[18rem] w-[15rem] shrink-0 overflow-hidden md:h-[24rem] md:w-[19rem]"
                   >
                     <Image
                       src={src}
                       alt=""
                       fill
-                      sizes="(min-width: 768px) 23rem, 18rem"
+                      sizes="(min-width: 768px) 19rem, 15rem"
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
-
-                    {/* image gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/75 via-transparent to-transparent opacity-70" />
-
-                    {/* index */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
                     <span className="absolute bottom-4 left-4 label text-primary">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                  </motion.div>
+                  </Reveal>
                 ))}
               </motion.div>
 
-              {/* Edge masks */}
               <div
                 className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background to-transparent"
                 aria-hidden="true"
               />
-
               <div
                 className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background to-transparent"
                 aria-hidden="true"
               />
             </div>
-
-            {/* Media caption */}
-            <motion.div
-              initial={rm ? false : { opacity: 0 }}
-              whileInView={rm ? undefined : { opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{
-                delay: 0.5,
-                duration: 0.8,
-              }}
-              className="mt-4 flex items-center justify-between"
-            >
-              <span className="label text-muted-foreground">
-                CREATIVE SYSTEM
-              </span>
-
-              <span className="label text-primary">
-                360° / 01
-              </span>
-            </motion.div>
           </div>
         </div>
 
-        {/* ================================================================== */}
-        {/* BOTTOM MOTION MARKER                                               */}
-        {/* ================================================================== */}
-
-        <div className="relative mt-24 overflow-hidden border-t border-border pt-5 md:mt-32">
-
+        {/* Chapter boundary marker */}
+        <div className="relative mt-20 overflow-hidden border-t border-border pt-5 md:mt-28">
           <motion.div
-            style={{
-              scaleX: accentScale,
-              transformOrigin: dir === "rtl" ? "right" : "left",
-            }}
+            style={{ scaleX: closeLine, transformOrigin: dir === "rtl" ? "right" : "left" }}
             className="absolute left-0 top-0 h-px w-full bg-primary"
           />
-
           <div className="flex items-center justify-between">
             <span className="label text-muted-foreground">
-              AI / MOTION / CONTENT
+              {t.aiMotion.closingLabel}
             </span>
-
-            <motion.span
-              style={{
-                x: useTransform(
-                  progress,
-                  [0, 1],
-                  rm ? ["0%", "0%"] : ["0%", dir === "rtl" ? "-30%" : "30%"],
-                ),
-              }}
-              className="label text-primary"
-            >
-              NO TIME — 360°
-            </motion.span>
+            <span className="label text-primary">NO TIME</span>
           </div>
         </div>
       </div>

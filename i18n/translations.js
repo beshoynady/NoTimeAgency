@@ -117,6 +117,8 @@ export const translations = {
       headingPre: 'We make',
       headingHighlight: 'ideas',
       headingPost: 'move',
+      mediaLabel: 'Motion / Content',
+      closingLabel: 'AI / Motion',
       items: [
         'AI-generated video ads & reels',
         'Cinematic product & brand films',
@@ -126,6 +128,7 @@ export const translations = {
       ],
     },
     capabilities: {
+      eyebrow: 'Production Register',
       heading: 'Extended Capabilities',
       scrollHint: 'Scroll',
     },
@@ -150,6 +153,7 @@ export const translations = {
       label: 'No Time Brand',
       statement: 'It’s time to start.',
       cta: 'Start a Project',
+      mailSubject: 'Project Inquiry — No Time',
     },
     footer: {
       dubai: 'Dubai',
@@ -274,6 +278,8 @@ export const translations = {
       headingPre: 'نُحرّك',
       headingHighlight: 'الأفكار',
       headingPost: '',
+      mediaLabel: 'الموشن والمحتوى',
+      closingLabel: 'الذكاء الاصطناعي / الموشن',
       items: [
         'إعلانات وريلز بالذكاء الاصطناعي',
         'أفلام سينمائية للمنتجات والعلامات',
@@ -283,6 +289,7 @@ export const translations = {
       ],
     },
     capabilities: {
+      eyebrow: 'سجل الإنتاج',
       heading: 'قدرات إضافية',
       scrollHint: 'مرّر',
     },
@@ -307,6 +314,7 @@ export const translations = {
       label: 'نو تايم',
       statement: 'حان وقت البدء.',
       cta: 'ابدأ مشروعًا',
+      mailSubject: 'استفسار عن مشروع — نو تايم',
     },
     footer: {
       dubai: 'دبي',

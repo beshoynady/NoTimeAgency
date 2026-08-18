@@ -20,36 +20,42 @@ import { IMG } from "@/lib/images";
 
 /* ---------- CONTACT — cinematic closing shot ---------- */
 
-const CONTACTS = [
-  {
-    type: "phone",
-    label: "Call us",
-    value: "+971 54 453 4333",
-    href: "https://wa.me/971544534333",
-    Icon: Phone,
-    external: true,
-  },
-  {
-    type: "email",
-    label: "Email us",
-    value: "info@notimehub.com",
-    href: "mailto:info@notimehub.com",
-    Icon: Mail,
-  },
-  {
-    type: "instagram",
-    label: "Instagram",
-    value: "@notimehub",
-    href: "https://www.instagram.com/notimehub/",
-    Icon: Instagram,
-    external: true,
-  },
-];
+const EMAIL = "info@notimehub.com";
 
 export default function Contact() {
   const { t } = useLang();
   const rm = useReducedMotion();
   const ref = useRef(null);
+
+  // Pre-filled subject so clicking the email actually opens a message ready
+  // to send, not a blank compose window — subject follows the active locale.
+  const mailHref = `mailto:${EMAIL}?subject=${encodeURIComponent(t.finalCta.mailSubject)}`;
+
+  const CONTACTS = [
+    {
+      type: "phone",
+      label: "Call us",
+      value: "+971 54 453 4333",
+      href: "https://wa.me/971544534333",
+      Icon: Phone,
+      external: true,
+    },
+    {
+      type: "email",
+      label: "Email us",
+      value: EMAIL,
+      href: mailHref,
+      Icon: Mail,
+    },
+    {
+      type: "instagram",
+      label: "Instagram",
+      value: "@notimehub",
+      href: "https://www.instagram.com/notimehub/",
+      Icon: Instagram,
+      external: true,
+    },
+  ];
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -61,6 +67,17 @@ export default function Contact() {
     damping: 30,
     mass: 0.5,
   });
+
+  // This section isn't pinned — offset ["start end", "end end"] maps its
+  // own full min-h-[120vh] height to progress 0..1 as it scrolls through a
+  // 100vh viewport. The previous thresholds (title 0.1-0.4, CTA 0.4-0.6,
+  // contacts 0.48-0.68) spread the reveal across more than half that
+  // distance, which meant nothing but the bare background was visible for
+  // the first ~12vh the section was on screen, then a slow drawn-out
+  // build-up — the same "empty scroll" pattern fixed elsewhere this
+  // session. Front-loaded into a short window near the start instead, so
+  // the section reads as complete almost as soon as it's on screen, then
+  // simply holds through the rest of its own scroll-through.
 
   /* ------------------------------------------------------------------------ */
   /* BACKGROUND                                                                */
@@ -74,7 +91,7 @@ export default function Contact() {
 
   const bgOpacity = useTransform(
     p,
-    rm ? [0, 1] : [0, 0.5],
+    rm ? [0, 1] : [0, 0.2],
     rm ? [0.45, 0.45] : [0, 0.45],
   );
 
@@ -84,13 +101,13 @@ export default function Contact() {
 
   const titleScale = useTransform(
     p,
-    rm ? [0, 1] : [0.1, 0.6],
+    rm ? [0, 1] : [0, 0.12],
     rm ? [1, 1] : [0.85, 1],
   );
 
   const titleOpacity = useTransform(
     p,
-    rm ? [0, 1] : [0.1, 0.4],
+    rm ? [0, 1] : [0, 0.06],
     rm ? [1, 1] : [0, 1],
   );
 
@@ -100,13 +117,13 @@ export default function Contact() {
 
   const ctaOpacity = useTransform(
     p,
-    rm ? [0, 1] : [0.4, 0.6],
+    rm ? [0, 1] : [0.08, 0.14],
     rm ? [1, 1] : [0, 1],
   );
 
   const ctaY = useTransform(
     p,
-    rm ? [0, 1] : [0.4, 0.6],
+    rm ? [0, 1] : [0.08, 0.14],
     rm ? ["0px", "0px"] : ["30px", "0px"],
   );
 
@@ -116,13 +133,13 @@ export default function Contact() {
 
   const contactsOpacity = useTransform(
     p,
-    rm ? [0, 1] : [0.48, 0.68],
+    rm ? [0, 1] : [0.16, 0.24],
     rm ? [1, 1] : [0, 1],
   );
 
   const contactsY = useTransform(
     p,
-    rm ? [0, 1] : [0.48, 0.68],
+    rm ? [0, 1] : [0.16, 0.24],
     rm ? ["0px", "0px"] : ["24px", "0px"],
   );
 
@@ -131,7 +148,7 @@ export default function Contact() {
       id="contact"
       ref={ref}
       data-chapter="action"
-      className="relative flex min-h-[120vh] items-center justify-center overflow-hidden border-t border-border"
+      className="relative flex min-h-[90vh] items-center justify-center overflow-hidden border-t border-border py-20"
     >
       {/* ================================================================== */}
       {/* BACKGROUND                                                         */}
@@ -193,7 +210,7 @@ export default function Contact() {
         {/* ================================================================== */}
 
         <motion.a
-          href="mailto:info@notimehub.com"
+          href={mailHref}
           style={{
             opacity: ctaOpacity,
             y: ctaY,

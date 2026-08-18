@@ -15,9 +15,15 @@ import { IMG } from "@/lib/images";
 
 const EASE = [0.16, 1, 0.3, 1];
 
+// Each capability carries a TAG — its actual craft domain (fabrication,
+// print, culinary...), not a sequence position. The rail previously numbered
+// these 01-06, which implies an order none of them actually have (you don't
+// need Production before Catering) — exactly the kind of numbering the
+// frontend-design skill flags as decoration standing in for information.
+// The tag is real information instead: what kind of work this is.
 const CAPABILITIES = [
   {
-    n: "01",
+    tag: { en: "Fabrication", ar: "تصنيع" },
     title: { en: "Production", ar: "الإنتاج" },
     copy: {
       en: "Exhibition stands, fabrication, installations and branded environments.",
@@ -26,7 +32,7 @@ const CAPABILITIES = [
     img: IMG.stand,
   },
   {
-    n: "02",
+    tag: { en: "Print & Finish", ar: "طباعة وتشطيب" },
     title: { en: "Gift Items", ar: "الهدايا" },
     copy: {
       en: "Corporate gifting produced to brand standard — screen printing, UV, foiling, debossing, laser engraving.",
@@ -35,7 +41,7 @@ const CAPABILITIES = [
     img: IMG.gifts,
   },
   {
-    n: "03",
+    tag: { en: "On-Site Capture", ar: "توثيق ميداني" },
     title: {
       en: "Photography & Videography",
       ar: "التصوير الفوتوغرافي والمرئي",
@@ -47,7 +53,7 @@ const CAPABILITIES = [
     img: IMG.table,
   },
   {
-    n: "04",
+    tag: { en: "Culinary", ar: "فن الطهي" },
     title: { en: "Catering", ar: "التموين" },
     copy: {
       en: "Private service, majlis, corporate hospitality, signature desserts, beverages and table styling.",
@@ -56,7 +62,7 @@ const CAPABILITIES = [
     img: IMG.majlis,
   },
   {
-    n: "05",
+    tag: { en: "Live Performance", ar: "أداء حي" },
     title: { en: "Entertainment", ar: "الترفيه" },
     copy: {
       en: "Arabic singers, oud players, live entertainment, sound and lighting.",
@@ -65,7 +71,7 @@ const CAPABILITIES = [
     img: IMG.oud,
   },
   {
-    n: "06",
+    tag: { en: "Technical Production", ar: "إنتاج تقني" },
     title: { en: "Sound & Lighting", ar: "الصوت والإضاءة" },
     copy: {
       en: "Stage design, rigging, DJ and live sound.",
@@ -135,8 +141,12 @@ function CapabilityCard({ item, index, lang, progress, reducedMotion }) {
       "
       role="listitem"
     >
-      {/* Image */}
-      <div className="relative h-[20rem] overflow-hidden">
+      {/* Image — capped well below the old h-[20rem] (320px): combined with
+          the header block above, that made the card taller than what's
+          left of the viewport after the fixed header on shorter screens
+          (confirmed at 1280x720), forcing the card's own content to be
+          clipped by the bottom of the screen. */}
+      <div className="relative h-44 overflow-hidden sm:h-48 md:h-52">
         <motion.div
           className="absolute inset-0"
           whileHover={reducedMotion ? undefined : { scale: 1.045 }}
@@ -160,10 +170,14 @@ function CapabilityCard({ item, index, lang, progress, reducedMotion }) {
         {/* Editorial image treatment */}
         <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/5 to-transparent" />
 
-        {/* Number */}
-        <div className="absolute left-5 top-5 flex items-center gap-3 rtl-flip">
-          <span className="label text-primary">{item.n}</span>
-          <span className="h-px w-8 bg-primary/60" />
+        {/* Process tag — the craft domain this capability belongs to, not a
+            position in a sequence (there's no order to fabrication vs.
+            catering). Styled like a workshop docket stamp: a bordered plate
+            sitting on the image, not a decorative number. */}
+        <div className="absolute left-5 top-5">
+          <span className="inline-block border border-primary/50 bg-background/70 px-2.5 py-1.5 label text-primary backdrop-blur-sm">
+            {item.tag[lang]}
+          </span>
         </div>
 
         {/* Hover arrow */}
@@ -177,22 +191,23 @@ function CapabilityCard({ item, index, lang, progress, reducedMotion }) {
       </div>
 
       {/* Content */}
-      <div className="relative p-6 md:p-7">
+      <div className="relative p-5 md:p-6">
         <div className="flex items-start justify-between gap-5">
           <h3 className="max-w-[90%] font-display text-2xl uppercase leading-[0.95] tracking-tight md:text-3xl">
             {item.title[lang]}
           </h3>
         </div>
 
-        <motion.div initial={false} className="mt-5 overflow-hidden">
+        <motion.div initial={false} className="mt-4 overflow-hidden">
           <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
             {item.copy[lang]}
           </p>
         </motion.div>
 
-        {/* Bottom accent */}
-        <div className="mt-7 flex items-center justify-between">
-          <span className="label text-muted-foreground">{item.n}</span>
+        {/* Bottom accent — the same tag, restated quietly rather than a
+            "0N of 6" that would read as a countdown. */}
+        <div className="mt-5 flex items-center justify-between">
+          <span className="label text-muted-foreground">{item.tag[lang]}</span>
 
           <span className="h-px flex-1 mx-4 bg-border transition-colors duration-500 group-hover:bg-primary/60" />
 
@@ -228,27 +243,23 @@ export default function Capabilities() {
     mass: 0.45,
   });
 
-  /*
-   * Subtle heading movement while the section passes
-   * through the viewport.
-   */
+  // Subtle heading drift while the section passes through the viewport —
+  // position only, not opacity. The section is only min-h-[100dvh], so the
+  // header and the card rail are visible together in the same screen; a
+  // 0.5-opacity fade at the scroll edges (the previous version) meant the
+  // eyebrow label was reliably faint/unreadable exactly while it was being
+  // looked at, not just briefly at the very top/bottom of a taller section.
   const headingY = useTransform(
     progress,
     [0, 1],
     reducedMotion ? [0, 0] : [18, -18],
   );
 
-  const headingOpacity = useTransform(
-    progress,
-    [0, 0.12, 0.88, 1],
-    reducedMotion ? [1, 1, 1, 1] : [0.5, 1, 1, 0.5],
-  );
-
   return (
     <section
       data-chapter="craft"
       aria-label={t.capabilities.heading}
-      className=" relative min-h-[100dvh] overflow-hidden border-b border-border bg-card/40 "
+      className=" relative min-h-[100dvh] py-10 overflow-hidden border-b border-border bg-card/40 "
     >
       {/* ---------------------------------------------------
           Header
@@ -256,17 +267,14 @@ export default function Capabilities() {
 
       <div className="mx-auto max-w-[90rem] px-5 md:px-10">
         <motion.div
-          style={{
-            y: headingY,
-            opacity: headingOpacity,
-          }}
+          style={{ y: headingY }}
           className="flex items-end justify-between gap-8"
         >
           <div>
             <div className="mb-5 flex items-center gap-3">
               <span className="h-px w-10 bg-primary" />
 
-              <span className="label text-primary">360° CAPABILITIES</span>
+              <span className="label text-primary">{t.capabilities.eyebrow}</span>
             </div>
 
             <h2 className="text-balance font-display text-4xl uppercase leading-[0.9] tracking-tight md:text-6xl lg:text-7xl">
@@ -309,7 +317,7 @@ export default function Capabilities() {
 
       <div
         className="
-          mt-12
+          mt-8
           flex
           snap-x
           snap-mandatory
@@ -319,7 +327,7 @@ export default function Capabilities() {
           pb-8
           pt-2
           [scrollbar-width:none]
-          md:mt-16
+          md:mt-10
           md:gap-6
           md:px-10
         "
@@ -331,7 +339,7 @@ export default function Capabilities() {
       >
         {CAPABILITIES.map((item, index) => (
           <CapabilityCard
-            key={item.n}
+            key={item.title.en}
             item={item}
             index={index}
             lang={lang}

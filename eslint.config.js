@@ -11,6 +11,8 @@ export default defineConfig([
     'dist',
     // Unrelated agent-skill tooling that happens to live in the repo root.
     'claude-design-skills/**',
+    '.agents/skills/**',
+    '.claude/skills/**',
     // Scaffolded shadcn/ui kit that nothing in the app imports (see the
     // migration report) — carried forward unchanged, not linted as live code.
     'components/ui/**',

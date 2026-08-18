@@ -4,28 +4,7 @@ import { Instagram, Mail, Phone, ArrowUpRight } from "lucide-react";
 import { useLang } from "@/i18n/LanguageContext";
 import Logo from "@/components/site/Logo";
 
-const CONTACTS = [
-  {
-    label: "Phone",
-    value: "+971 54 453 4333",
-    href: "https://wa.me/971544534333",
-    Icon: Phone,
-    external: true,
-  },
-  {
-    label: "Email",
-    value: "info@notimehub.com",
-    href: "mailto:info@notimehub.com",
-    Icon: Mail,
-  },
-  {
-    label: "Instagram",
-    value: "@notimehub",
-    href: "https://www.instagram.com/notimehub/",
-    Icon: Instagram,
-    external: true,
-  },
-];
+const EMAIL = "info@notimehub.com";
 
 const MARKETS = [
   "SA",
@@ -38,6 +17,33 @@ const MARKETS = [
 
 export default function Footer() {
   const { t } = useLang();
+
+  // Pre-filled subject so clicking the email opens a message ready to send,
+  // not a blank compose window — subject follows the active locale.
+  const mailHref = `mailto:${EMAIL}?subject=${encodeURIComponent(t.finalCta.mailSubject)}`;
+
+  const CONTACTS = [
+    {
+      label: "Phone",
+      value: "+971 54 453 4333",
+      href: "https://wa.me/971544534333",
+      Icon: Phone,
+      external: true,
+    },
+    {
+      label: "Email",
+      value: EMAIL,
+      href: mailHref,
+      Icon: Mail,
+    },
+    {
+      label: "Instagram",
+      value: "@notimehub",
+      href: "https://www.instagram.com/notimehub/",
+      Icon: Instagram,
+      external: true,
+    },
+  ];
 
   return (
     <footer
