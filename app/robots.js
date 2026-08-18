@@ -1,4 +1,4 @@
-const SITE_URL = 'https://notime.agency';
+const SITE_URL = 'https://notime-hub.com';
 
 export default function robots() {
   return {

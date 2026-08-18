@@ -10,7 +10,9 @@ pnpm-debug.log*
 lerna-debug.log*
 skills-lock.json
 .gitignore
-
+.claude
+.codex
+.impeccable
 visual-review.mjs
 
 node_modules

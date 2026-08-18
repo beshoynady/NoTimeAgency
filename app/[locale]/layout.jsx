@@ -3,7 +3,7 @@ import { LanguageProvider } from '@/i18n/LanguageContext';
 import ScrollToTop from '@/components/ScrollToTop';
 import '../globals.css';
 
-const SITE_URL = 'https://notime.agency';
+const SITE_URL = 'https://notime-hub.com';
 const LOCALES = ['en', 'ar'];
 
 export function generateStaticParams() {

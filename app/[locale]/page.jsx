@@ -17,7 +17,7 @@ import Footer from "@/components/home/Footer";
 import { translations } from "@/i18n/translations";
 import { IMG } from "@/lib/images";
 
-const SITE_URL = "https://notime.agency";
+const SITE_URL = "https://notime-hub.com";
 
 export async function generateMetadata({ params }) {
   const { locale: rawLocale } = await params;
