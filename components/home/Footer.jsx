@@ -282,7 +282,7 @@ export default function Footer() {
       <div className="mx-auto flex max-w-[90rem] flex-col gap-4 px-5 py-6 text-[0.65rem] uppercase tracking-[0.16em] text-muted-foreground md:flex-row md:items-center md:justify-between md:px-10">
 
         <span>
-          © {new Date().getFullYear()} {t.footer.rights}
+          Copyright © 2026 {new Date().getFullYear()} {t.footer.rights}
         </span>
 
         <div className="flex items-center gap-3">

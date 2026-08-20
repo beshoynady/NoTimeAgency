@@ -9,16 +9,16 @@
        hsl(var(--x)) tokens expect. Each --nt-* is the exact brand color;
        the semantic tokens below assign them to roles using the palette's
        own documented usage rules. */
-    --nt-copper-light: 31 78% 73%;  /* #F0BD86 — gradient start · accents */
-    --nt-copper-deep: 20 42% 49%;   /* #B36D49 — gradient end · brand ground */
-    --nt-charcoal: 0 0% 15%;        /* #262626 — primary background */
-    --nt-grey-mid: 216 3% 66%;      /* #A6A8AB — mono logo (light grounds) · captions */
-    --nt-grey-light: 0 0% 87%;      /* #DDDDDD — soft background · mono logo (dark grounds) */
-    --nt-black: 0 0% 0%;            /* max-contrast mark */
-    --nt-white: 0 0% 100%;          /* reversed mark · paper */
+    --nt-copper-light: 31 78% 73%; /* #F0BD86 — gradient start · accents */
+    --nt-copper-deep: 20 42% 49%; /* #B36D49 — gradient end · brand ground */
+    --nt-charcoal: 0 0% 15%; /* #262626 — primary background */
+    --nt-grey-mid: 216 3% 66%; /* #A6A8AB — mono logo (light grounds) · captions */
+    --nt-grey-light: 0 0% 87%; /* #DDDDDD — soft background · mono logo (dark grounds) */
+    --nt-black: 0 0% 0%; /* max-contrast mark */
+    --nt-white: 0 0% 100%; /* reversed mark · paper */
     /* Gradient rule from the source doc: wordmark and hero type only —
        never body copy, never a background. */
-    --nt-gradient: linear-gradient(90deg, #F0BD86 0%, #B36D49 100%);
+    --nt-gradient: linear-gradient(90deg, #f0bd86 0%, #b36d49 100%);
 
     --background: var(--nt-charcoal);
     --foreground: var(--nt-white);
@@ -83,7 +83,7 @@ body {
 }
 
 .grain::after {
-  content: '';
+  content: "";
   position: fixed;
   inset: 0;
   z-index: 60;
@@ -224,8 +224,12 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .spin-slow { animation: none; }
+  html {
+    scroll-behavior: auto;
+  }
+  .spin-slow {
+    animation: none;
+  }
   *,
   *::before,
   *::after {
@@ -234,9 +238,6 @@ body {
     animation-iteration-count: 1 !important;
   }
 }
-
-
-
 
 /* =====================================================
    NO TIME — SEAMLESS INFINITE MARQUEE
@@ -256,7 +257,6 @@ body {
   flex-shrink: 0;
 }
 
-
 /* =====================================================
    LTR
    ===================================================== */
@@ -270,7 +270,6 @@ body {
     transform: translate3d(-50%, 0, 0);
   }
 }
-
 
 /* =====================================================
    RTL
@@ -286,7 +285,6 @@ body {
   }
 }
 
-
 .animate-marquee {
   animation: marquee 60s linear infinite;
   will-change: transform;
@@ -296,7 +294,6 @@ body {
   animation: marquee-rtl 60s linear infinite;
   will-change: transform;
 }
-
 
 /* =====================================================
    REDUCED MOTION
