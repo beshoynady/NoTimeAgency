@@ -43,7 +43,7 @@ export default function Contact() {
     {
       type: "email",
       label: "Email us",
-      value: EMAIL,
+      value: "info@notime-hub.com",
       href: mailHref,
       Icon: Mail,
     },

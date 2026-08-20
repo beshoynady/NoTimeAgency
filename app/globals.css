@@ -336,16 +336,6 @@ body {
 }
 
 /*
- * Slow down slightly when the user interacts with the strip.
- * We don't pause completely because the strip should still feel alive.
- */
-
-.group:hover .animate-trusted,
-.group:hover .animate-trusted-rtl {
-  animation-play-state: paused;
-}
-
-/*
  * Accessibility
  */
 

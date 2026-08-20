@@ -67,7 +67,6 @@ export default function Marquee() {
                 ? "animate-marquee-rtl"
                 : "animate-marquee"
             }
-            group-hover:[animation-play-state:paused]
           `}
         >
           {row.map((txt, i) => (
