@@ -20,7 +20,7 @@ import { IMG } from "@/lib/images";
 
 /* ---------- CONTACT — cinematic closing shot ---------- */
 
-const EMAIL = "info@notimehub.com";
+const EMAIL = "info@notime-hub.com";
 
 export default function Contact() {
   const { t } = useLang();
@@ -43,7 +43,7 @@ export default function Contact() {
     {
       type: "email",
       label: "Email us",
-      value: "info@notime-hub.com",
+      value: EMAIL,
       href: mailHref,
       Icon: Mail,
     },
