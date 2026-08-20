@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useRef } from "react";
 import Image from "next/image";
@@ -9,12 +9,7 @@ import {
   useSpring,
   useReducedMotion,
 } from "framer-motion";
-import {
-  ArrowRight,
-  Instagram,
-  Mail,
-  Phone,
-} from "lucide-react";
+import { ArrowRight, Instagram, Mail, Phone } from "lucide-react";
 import { useLang } from "@/i18n/LanguageContext";
 import { IMG } from "@/lib/images";
 
@@ -45,10 +40,10 @@ export default function Contact() {
       label: "Email us",
       value: EMAIL,
       href:
-      `https://mail.google.com/mail/?view=cm&fs=1` +
-      `&to=${encodeURIComponent(EMAIL)}` +
-      `&su=${encodeURIComponent(t.finalCta.mailSubject)}`,
-    external: true,
+        `https://mail.google.com/mail/?view=cm&fs=1` +
+        `&to=${encodeURIComponent(EMAIL)}` +
+        `&su=${encodeURIComponent(t.finalCta.mailSubject)}`,
+      external: true,
       Icon: Mail,
     },
     {
@@ -91,11 +86,7 @@ export default function Contact() {
   /* BACKGROUND                                                                */
   /* ------------------------------------------------------------------------ */
 
-  const bgScale = useTransform(
-    p,
-    [0, 1],
-    rm ? [1, 1] : [1.3, 1],
-  );
+  const bgScale = useTransform(p, [0, 1], rm ? [1, 1] : [1.3, 1]);
 
   const bgOpacity = useTransform(
     p,
@@ -248,21 +239,20 @@ export default function Contact() {
           <div className="mb-6 flex items-center justify-center gap-4">
             <span className="h-px w-8 bg-border" />
 
-            <span className="label text-muted-foreground">
-              CONTACT
-            </span>
+            <span className="label text-muted-foreground">CONTACT</span>
 
             <span className="h-px w-8 bg-border" />
           </div>
 
           <div className="grid grid-cols-1 border border-border/70 bg-background/20 backdrop-blur-md sm:grid-cols-3">
-            {CONTACTS.map(({ type, label, value, href, Icon, external }, index) => (
-              <a
-                key={type}
-                href={href}
-                target={external ? "_blank" : undefined}
-                rel={external ? "noreferrer" : undefined}
-                className={`
+            {CONTACTS.map(
+              ({ type, label, value, href, Icon, external }, index) => (
+                <a
+                  key={type}
+                  href={href}
+                  target={external ? "_blank" : undefined}
+                  rel={external ? "noreferrer" : undefined}
+                  className={`
                   group flex min-h-28 items-center gap-4 px-5 py-5 text-start
                   transition-colors duration-300
                   hover:bg-background/30
@@ -275,35 +265,32 @@ export default function Contact() {
                       : ""
                   }
                 `}
-              >
-                {/* Icon */}
-                <span className="grid h-10 w-10 shrink-0 place-items-center border border-border/80 bg-background/30 text-primary transition-colors duration-300 group-hover:border-primary/50 group-hover:bg-primary/10">
-                  <Icon
-                    size={17}
-                    strokeWidth={1.4}
-                    aria-hidden="true"
+                >
+                  {/* Icon */}
+                  <span className="grid h-10 w-10 shrink-0 place-items-center border border-border/80 bg-background/30 text-primary transition-colors duration-300 group-hover:border-primary/50 group-hover:bg-primary/10">
+                    <Icon size={17} strokeWidth={1.4} aria-hidden="true" />
+                  </span>
+
+                  {/* Text */}
+                  <span className="min-w-0">
+                    <span className="block text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                      {label}
+                    </span>
+
+                    <span className="mt-1 block truncate text-sm font-medium tracking-wide text-foreground transition-colors duration-300 group-hover:text-primary">
+                      <bdi dir="ltr">{value}</bdi>
+                    </span>
+                  </span>
+
+                  {/* Directional arrow */}
+                  <ArrowRight
+                    size={14}
+                    strokeWidth={1.3}
+                    className="ms-auto shrink-0 text-muted-foreground transition-[color,transform] duration-300 group-hover:translate-x-1 group-hover:text-primary rtl-flip"
                   />
-                </span>
-
-                {/* Text */}
-                <span className="min-w-0">
-                  <span className="block text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                    {label}
-                  </span>
-
-                  <span className="mt-1 block truncate text-sm font-medium tracking-wide text-foreground transition-colors duration-300 group-hover:text-primary">
-                    <bdi dir="ltr">{value}</bdi>
-                  </span>
-                </span>
-
-                {/* Directional arrow */}
-                <ArrowRight
-                  size={14}
-                  strokeWidth={1.3}
-                  className="ms-auto shrink-0 text-muted-foreground transition-[color,transform] duration-300 group-hover:translate-x-1 group-hover:text-primary rtl-flip"
-                />
-              </a>
-            ))}
+                </a>
+              ),
+            )}
           </div>
         </motion.div>
       </div>
