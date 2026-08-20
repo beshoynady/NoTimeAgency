@@ -265,7 +265,7 @@ body {
 .animate-marquee {
   animation:
     marquee
-    32s
+    60s
     linear
     infinite;
   will-change: transform;
@@ -274,7 +274,7 @@ body {
 .animate-marquee-rtl {
   animation:
     marquee-rtl
-    32s
+    60s
     linear
     infinite;
   will-change: transform;
@@ -342,12 +342,12 @@ body {
 
 
 .animate-marquee {
-  animation: marquee 40s linear infinite;
+  animation: marquee 60s linear infinite;
   will-change: transform;
 }
 
 .animate-marquee-rtl {
-  animation: marquee-rtl 40s linear infinite;
+  animation: marquee-rtl 60s linear infinite;
   will-change: transform;
 }
 
