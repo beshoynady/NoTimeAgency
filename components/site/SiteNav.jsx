@@ -247,6 +247,7 @@ export default function SiteNav() {
                 className="
                   group
                   label
+                  nav-link
                   relative
                   text-muted-foreground
                   transition-colors

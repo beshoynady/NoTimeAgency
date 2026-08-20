@@ -95,12 +95,6 @@ body {
 .marquee-track {
   display: flex;
   width: max-content;
-  animation: marquee 34s linear infinite;
-}
-
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
 }
 
 .spin-slow {
@@ -201,6 +195,14 @@ body {
   letter-spacing: 0.1em;
   line-height: 1.7;
 }
+/* .label's flat 11px reads noticeably smaller in Arabic than in tracked
+   Latin caps (no small-caps tradition, denser stroke detail) — size the
+   header nav links up specifically so they read as intentional next to a
+   68px header, without touching every other .label use site-wide. */
+[dir="rtl"] .nav-link {
+  font-size: 0.9375rem;
+  letter-spacing: 0.06em;
+}
 /* Comfortable line-height for Arabic body + headings. */
 [dir="rtl"] p,
 [dir="rtl"] li {
@@ -210,10 +212,6 @@ body {
 [dir="rtl"] h2,
 [dir="rtl"] h3 {
   line-height: 1.25;
-}
-/* Marquee scrolls the other way in RTL. */
-[dir="rtl"] .marquee-track {
-  animation-direction: reverse;
 }
 /* Flip directional arrows to point with the reading flow. */
 [dir="rtl"] .rtl-flip {
@@ -227,7 +225,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .marquee-track, .spin-slow { animation: none; }
+  .spin-slow { animation: none; }
   *,
   *::before,
   *::after {
