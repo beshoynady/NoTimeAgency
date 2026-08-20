@@ -169,7 +169,7 @@ export default function SiteNav() {
         inset-x-0
         top-0
         z-50
-        transition-all
+        transition-[background-color,border-color,backdrop-filter]
         duration-500
         ease-[cubic-bezier(0.16,1,0.3,1)]
         ${
@@ -245,6 +245,7 @@ export default function SiteNav() {
               <a
                 href={link.href}
                 className="
+                  group
                   label
                   relative
                   text-muted-foreground
@@ -259,6 +260,13 @@ export default function SiteNav() {
               >
                 {link.label}
 
+                {/* Was w-0 -> group-hover:w-full: animating width (a layout
+                    property) on hover, and `group-hover` couldn't ever fire
+                    anyway since the parent <a> was missing the `group`
+                    class — the underline was dead code. Fixed both: added
+                    `group` above, and swapped the reveal to a compositor-
+                    only scaleX (dir-aware origin, so it draws from the
+                    correct edge in RTL). */}
                 <span
                   aria-hidden="true"
                   className="
@@ -266,11 +274,14 @@ export default function SiteNav() {
                     -bottom-2
                     left-0
                     h-px
-                    w-0
+                    w-full
+                    origin-left
+                    scale-x-0
                     bg-primary
-                    transition-all
+                    rtl:origin-right
+                    transition-transform
                     duration-300
-                    group-hover:w-full
+                    group-hover:scale-x-100
                   "
                 />
               </a>
@@ -370,7 +381,7 @@ export default function SiteNav() {
               py-3
               label
               text-primary
-              transition-all
+              transition-colors
               duration-300
               hover:bg-primary
               hover:text-primary-foreground
@@ -416,7 +427,7 @@ export default function SiteNav() {
               bg-background/40
               text-foreground
               backdrop-blur-sm
-              transition-all
+              transition-colors
               duration-300
               hover:border-primary/60
               hover:text-primary
@@ -679,7 +690,7 @@ export default function SiteNav() {
                             border
                             border-border
                             text-primary
-                            transition-all
+                            transition-colors
                             duration-300
                             group-hover:border-primary
                             group-hover:bg-primary

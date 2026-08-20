@@ -235,6 +235,10 @@ export default function Capabilities() {
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
+    // See AiMotion.jsx's comment on this option — defers measurement past
+    // the layout-effect phase, fixing a real "ref not yet hydrated" console
+    // warning observed on first load.
+    layoutEffect: false,
   });
 
   const progress = useSpring(scrollYProgress, {

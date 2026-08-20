@@ -60,6 +60,10 @@ export default function Contact() {
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end end"],
+    // See AiMotion.jsx's comment on this option — defers measurement past
+    // the layout-effect phase, fixing a real "ref not yet hydrated" console
+    // warning observed on first load.
+    layoutEffect: false,
   });
 
   const p = useSpring(scrollYProgress, {
@@ -215,7 +219,7 @@ export default function Contact() {
             opacity: ctaOpacity,
             y: ctaY,
           }}
-          className="group mt-14 inline-flex items-center gap-4 bg-primary px-9 py-5 label text-primary-foreground transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,132,61,0.25)] active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-4"
+          className="group mt-14 inline-flex items-center gap-4 bg-primary px-9 py-5 label text-primary-foreground transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,132,61,0.25)] active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-4"
         >
           <span>{t.finalCta.cta}</span>
 
@@ -256,7 +260,7 @@ export default function Contact() {
                 rel={external ? "noreferrer" : undefined}
                 className={`
                   group flex min-h-28 items-center gap-4 px-5 py-5 text-start
-                  transition-all duration-300
+                  transition-colors duration-300
                   hover:bg-background/30
                   focus-visible:outline focus-visible:outline-2
                   focus-visible:outline-primary focus-visible:outline-offset-[-2px]
@@ -269,7 +273,7 @@ export default function Contact() {
                 `}
               >
                 {/* Icon */}
-                <span className="grid h-10 w-10 shrink-0 place-items-center border border-border/80 bg-background/30 text-primary transition-all duration-300 group-hover:border-primary/50 group-hover:bg-primary/10">
+                <span className="grid h-10 w-10 shrink-0 place-items-center border border-border/80 bg-background/30 text-primary transition-colors duration-300 group-hover:border-primary/50 group-hover:bg-primary/10">
                   <Icon
                     size={17}
                     strokeWidth={1.4}
@@ -292,7 +296,7 @@ export default function Contact() {
                 <ArrowRight
                   size={14}
                   strokeWidth={1.3}
-                  className="ms-auto shrink-0 text-muted-foreground transition-all duration-300 group-hover:translate-x-1 group-hover:text-primary rtl-flip"
+                  className="ms-auto shrink-0 text-muted-foreground transition-[color,transform] duration-300 group-hover:translate-x-1 group-hover:text-primary rtl-flip"
                 />
               </a>
             ))}

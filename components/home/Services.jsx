@@ -263,15 +263,15 @@ function ServiceRow({
         {/* Main title */}
         <div className="md:col-span-7">
           <motion.h3
-            animate={{
-              x: isActive ? 8 : 0,
-              color: isActive ? "hsl(var(--primary))" : undefined,
-            }}
+            animate={{ x: isActive ? 8 : 0 }}
             transition={{
               duration: 0.5,
               ease: EASE,
             }}
-            className="font-display text-4xl uppercase leading-[0.92] tracking-tight md:text-6xl lg:text-[4.2rem]"
+            className={[
+              "font-display text-4xl uppercase leading-[0.92] tracking-tight transition-colors duration-500 md:text-6xl lg:text-[4.2rem]",
+              isActive ? "text-primary" : "text-foreground",
+            ].join(" ")}
           >
             {service.title[lang]}
           </motion.h3>

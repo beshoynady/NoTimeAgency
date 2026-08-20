@@ -118,7 +118,7 @@ export default function Footer() {
                       className="
                         opacity-0
                         -translate-x-1
-                        transition-all
+                        transition-[opacity,transform]
                         duration-300
                         group-hover:translate-x-0
                         group-hover:opacity-100
@@ -198,7 +198,7 @@ export default function Footer() {
                       bg-card/20
                       px-4
                       py-3.5
-                      transition-all
+                      transition-colors
                       duration-300
                       hover:border-primary/40
                       hover:bg-card/40
@@ -251,7 +251,7 @@ export default function Footer() {
                         ms-auto
                         shrink-0
                         text-muted-foreground
-                        transition-all
+                        transition-[color,transform]
                         duration-300
                         group-hover:translate-x-0.5
                         group-hover:-translate-y-0.5

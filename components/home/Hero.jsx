@@ -27,6 +27,12 @@ export default function Hero() {
     // full viewport-height later, after the pin has already released — every
     // transform driven off progress in that dead zone plays out invisibly.
     offset: ["start start", "end end"],
+    // Defers Framer's scroll-target measurement past the layout-effect
+    // phase — fixes a real "ref not yet hydrated" console warning observed
+    // on first load (React 19 / Next 16 render-timing quirk, Framer's own
+    // suggested remediation). Technical fix only, no visual/behavioral
+    // change — within Hero's "bug fixes only" exemption.
+    layoutEffect: false,
   });
   // Stiffer than the original tuning: the spring's job is to smooth the
   // motion, not to lag behind it. With the old stiffness (80), fast/flick

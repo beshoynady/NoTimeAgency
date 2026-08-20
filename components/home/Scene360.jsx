@@ -344,6 +344,10 @@ export default function Scene360() {
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
+    // See Hero.jsx's comment on this option — defers measurement past the
+    // layout-effect phase, fixing a real "ref not yet hydrated" console
+    // warning observed on first load.
+    layoutEffect: false,
   });
 
   /*

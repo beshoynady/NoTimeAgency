@@ -50,6 +50,12 @@ export default function AiMotion() {
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
+    // Defers Framer's scroll-target measurement to a regular effect instead
+    // of a layout effect — avoids a real, observed console warning on first
+    // hydration ("ref is not yet hydrated") that fires because the layout
+    // effect can run before this ref's DOM node is committed under React
+    // 19 / Next 16's render timing. Framer's own suggested fix.
+    layoutEffect: false,
   });
   const progress = useSpring(scrollYProgress, {
     stiffness: 70,
