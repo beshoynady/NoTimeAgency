@@ -44,7 +44,11 @@ export default function Contact() {
       type: "email",
       label: "Email us",
       value: EMAIL,
-      href: mailHref,
+      href:
+      `https://mail.google.com/mail/?view=cm&fs=1` +
+      `&to=${encodeURIComponent(EMAIL)}` +
+      `&su=${encodeURIComponent(t.finalCta.mailSubject)}`,
+    external: true,
       Icon: Mail,
     },
     {
