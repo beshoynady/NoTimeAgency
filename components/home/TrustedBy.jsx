@@ -401,6 +401,7 @@ export default function TrustedBy() {
             flex-1
             overflow-hidden
           "
+          dir="ltr"
         >
 
 
@@ -448,11 +449,16 @@ export default function TrustedBy() {
               SEAMLESS MARQUEE TRACK
 
               IMPORTANT:
-              dir="ltr" is intentional.
-
-              We control the actual movement using the
-              RTL/LTR animation instead of allowing CSS RTL
-              to alter flex ordering.
+              dir="ltr" lives on the viewport container above, not
+              here. A block-level child anchors to its *parent's*
+              block-flow start edge, not its own — so setting it only
+              on the track (with the viewport left at inherited rtl)
+              anchored the over-wide track to the right instead of
+              the left, and the 0%→-50% translateX math silently
+              assumed left-anchoring. Result: for most of the RTL
+              cycle the whole track sat scrolled out of view. Setting
+              it on the viewport fixes the anchor for everything
+              inside it, matching Marquee.jsx's working pattern.
           ================================================= */}
 
           <div
@@ -464,7 +470,6 @@ export default function TrustedBy() {
                   : "animate-marquee"
               }
             `}
-            dir="ltr"
           >
 
 
