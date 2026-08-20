@@ -5,7 +5,7 @@ import { useLang } from "@/i18n/LanguageContext";
 import { LOGOS } from "@/lib/images";
 
 /*
- *  BY
+ * TRUSTED BY
  * ---------------------------------------------------------
  * Editorial credibility strip.
  *
@@ -193,14 +193,14 @@ function ClientMark({ client }) {
 
 
 /* =========================================================
-    CLIENT ITEM
+   TRUSTED CLIENT ITEM
    =========================================================
  *
  * Kept separate so both marquee groups use the exact same
  * markup and spacing.
  */
 
-function Client({ client }) {
+function TrustedClient({ client }) {
   return (
     <div
       className="
@@ -254,14 +254,14 @@ function Client({ client }) {
 
 
 /* =========================================================
-    BY
+   TRUSTED BY
    ========================================================= */
 
-export default function By() {
+export default function TrustedBy() {
   const { t, dir } = useLang();
 
   const clients =
-    t.By.clients;
+    t.trustedBy.clients;
 
   const isRTL =
     dir === "rtl";
@@ -294,7 +294,7 @@ export default function By() {
   return (
     <section
       data-chapter="proof"
-      aria-label={t.By.label}
+      aria-label={t.trustedBy.label}
       className="
         relative
         overflow-hidden
@@ -384,7 +384,7 @@ export default function By() {
                 text-muted-foreground
               "
             >
-              {t.By.label}
+              {t.trustedBy.label}
             </p>
           </div>
         </div>
@@ -474,12 +474,12 @@ export default function By() {
 
             <div
               className="
-                -group
+                marquee-group
               "
             >
               {group.map(
                 (client, index) => (
-                  <Client
+                  <TrustedClient
                     key={`group-1-${client.name}-${index}`}
                     client={client}
                   />
@@ -504,7 +504,7 @@ export default function By() {
             >
               {group.map(
                 (client, index) => (
-                  <Client
+                  <TrustedClient
                     key={`group-2-${client.name}-${index}`}
                     client={client}
                   />
