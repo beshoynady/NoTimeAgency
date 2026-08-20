@@ -4,7 +4,7 @@ import { Instagram, Mail, Phone, ArrowUpRight } from "lucide-react";
 import { useLang } from "@/i18n/LanguageContext";
 import Logo from "@/components/site/Logo";
 
-const EMAIL = "info@notimehub.com";
+const EMAIL = "info@notime-hub.com";
 
 const MARKETS = [
   "SA",
